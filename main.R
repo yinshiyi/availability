@@ -28,7 +28,7 @@ select(dtstart, dtend)
 # rrule_freq rrule_interval rrule_byday rrule_until rrule_wkst 
 
 
-useful_interval
+useful_interval<-interval(useful$dtstart, useful$dtend)
 
 
 ##############################################
@@ -43,7 +43,7 @@ workweek<-future[!(format(future,'%A')%in%c("Saturday","Sunday"))]
 #weekdays(future)%in%c("Saturday","Sunday")
 start<-as.POSIXct(paste(workweek, "9:00:00"))
 end<-as.POSIXct(paste(workweek, "17:00:00"))
-workweek_interval
+workweek_interval<-interval(start, end)
 
 
 
@@ -52,8 +52,17 @@ workweek_interval
 # step 3 
 # doing the math
 # https://lubridate.tidyverse.org/reference/interval.html
-setdiff(workweek_interval, useful_interval)
+# idea right now
+# use the time point involved to make all possible time intervals, and take out the shorts ones, then take out the ones that intersect with the time blocked ones
+lubridate::setdiff(workweek_interval[2], useful_interval[1])
+intersect(workweek_interval[2], useful_interval[1])
+setdiff(workweek_interval[5], useful_interval[c(2,5)])
 
+union(workweek_interval[2], useful_interval[1])
+setequal(workweek_interval[2], useful_interval[1])
+
+lubridate::setdiff(useful_interval[1],workweek_interval[2])
+int_overlaps(useful_interval[1],workweek_interval[2])
 
 ########################
 # output the time interval
@@ -67,3 +76,7 @@ format(useful,usetz=T)
 
 
 format(a$start,usetz=TRUE)
+
+
+setdiff(1:5, 1:8)
+setdiff(1:8, 3:5)
