@@ -41,6 +41,7 @@ workweek_interval
 
 
 #####################
+# step 3 
 # doing the math
 # https://lubridate.tidyverse.org/reference/interval.html
 setdiff(workweek_interval, useful_interval)
