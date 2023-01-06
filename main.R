@@ -9,7 +9,7 @@ library(lubridate, warn.conflicts = FALSE)
 
 ############################################
 # step 1, importing calendar and obtain blocked timeslots
-a<-ical_parse_df("Downloads/shiyiyin@verily.com.ics")
+a<-ical_parse_df("~/Downloads/shiyiyin@verily.com.ics")
 
 # get time booked for the next 10 days
 # ingnoring events that is longer than 2 days
@@ -18,6 +18,14 @@ filter(difftime(dtend,Sys.time(),units='days')<10)%>%
 filter(difftime(dtend,Sys.time(),units='days')>0)%>%
 filter(difftime(dtend,dtstart,units='days')<2)%>%
 select(dtstart, dtend)
+
+######
+# very tricky dealing with rrules
+####
+# filter based on dtstart, if the dtstart is far in the future, more than 11 days, then no need for calculation.
+# filter based on rrule_until, if the rrule_until is before today then no need for calculation. if NA then need to calculate
+# for rrule_freq=="MONTHLY", adding entry until the rrule_until, is that is NA, then until 11 days into the future
+# rrule_freq rrule_interval rrule_byday rrule_until rrule_wkst 
 
 
 useful_interval
